@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ReceiptReportForm } from "@/components/ReceiptReportForm";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface InventoryItem {
   id: string;
@@ -107,6 +109,7 @@ const SAMPLE_BORROWS: BorrowRecord[] = [
 const CATEGORIES = ["Alat Lab", "Peralatan", "Ruangan", "Buku", "Elektronik"];
 
 export default function Index() {
+  const { user } = useAuth();
   const [inventory, setInventory] = useState<InventoryItem[]>(SAMPLE_INVENTORY);
   const [borrows, setBorrows] = useState<BorrowRecord[]>(SAMPLE_BORROWS);
   const [searchTerm, setSearchTerm] = useState("");
@@ -165,10 +168,11 @@ export default function Index() {
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="inventory">Inventaris</TabsTrigger>
             <TabsTrigger value="borrow">Peminjaman</TabsTrigger>
+            <TabsTrigger value="receipt">Laporan Penerimaan</TabsTrigger>
             <TabsTrigger value="settings">Pengaturan</TabsTrigger>
           </TabsList>
 
@@ -387,6 +391,11 @@ export default function Index() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Receipt Report Tab */}
+          <TabsContent value="receipt" className="space-y-6">
+            <ReceiptReportForm />
           </TabsContent>
 
           {/* Settings Tab */}
